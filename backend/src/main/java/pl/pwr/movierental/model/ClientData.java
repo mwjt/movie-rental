@@ -21,10 +21,6 @@ public class ClientData {
     private Double accountBalance;
 
     @ManyToOne
-    @JoinColumn(name = "cityid", referencedColumnName = "cityid")
-    private City city;
-
-    @ManyToOne
     @JoinColumn(name = "addressid", referencedColumnName = "addressid")
     private Address address;
 

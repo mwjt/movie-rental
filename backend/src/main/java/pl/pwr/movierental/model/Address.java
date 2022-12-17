@@ -25,4 +25,8 @@ public class Address {
     private String flatNumber;
 
     private String postalCode;
+
+    @ManyToOne
+    @JoinColumn(name = "cityid", referencedColumnName = "cityid")
+    private City city;
 }
