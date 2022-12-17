@@ -14,7 +14,7 @@ CREATE TABLE "Address" (
 	Street varchar(100) NOT NULL, 
 	BuildingNumber varchar(5) NOT NULL, 
 	FlatNumber varchar(5), 
-	PostalCode varchar(10) NOT NULL UNIQUE,  
+	PostalCode varchar(10) NOT NULL,  
 	CityID int4 NOT NULL, 
 	PRIMARY KEY (AddressID));
 CREATE TABLE "City" (
