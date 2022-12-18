@@ -12,19 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PersonalData")
-public class PersonalData {
+@Table(name = "Role")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer personalDataId;
+    private Integer roleId;
 
-    private String name;
-
-    private String surname;
-
-    private Integer phoneNumber;
-
-    @OneToOne
-    @JoinColumn(name = "userid", referencedColumnName = "userid")
-    private User user;
+    private ERole name;
 }

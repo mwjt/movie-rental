@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonalDataDTO {
-    private int personalDataId;
-    private String name;
-    private String surname;
-    private int phoneNumber;
-    private UserDTO userDTO;
+public class UserDTO {
+    private int userId;
+    private String username;
+    private String password;
+    private String email;
 }

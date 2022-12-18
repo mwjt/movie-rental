@@ -1,19 +1,32 @@
 package pl.pwr.movierental.model.api.response;
 
+
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.util.List;
 
+@Data
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-public class JwtResponse implements Serializable {
+public class JwtResponse {
+    private String token;
+    private String type;
+    private int userId;
+    private String username;
+    private String password;
+    private String email;
+    private List roles;
 
-    @Serial
-    private static final long serialVersionUID = -1L;
-
-    private final String token;
+    public JwtResponse(String jwt, int id, String username, String email, List<String> roles) {
+        this.token = jwt;
+        this.type = "Basic";
+        this.userId = id;
+        this.username = username;
+        this.email = email;
+        this.roles = roles;
+    }
 }
