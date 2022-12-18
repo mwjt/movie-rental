@@ -1,4 +1,4 @@
-package pl.pwr.movierental.model;
+package pl.pwr.movierental.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +19,6 @@ public class ClientData {
     private Integer clientId;
 
     private Double accountBalance;
-
-    @ManyToOne
-    @JoinColumn(name = "cityid", referencedColumnName = "cityid")
-    private City city;
 
     @ManyToOne
     @JoinColumn(name = "addressid", referencedColumnName = "addressid")

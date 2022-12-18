@@ -1,4 +1,4 @@
-package pl.pwr.movierental.model;
+package pl.pwr.movierental.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,13 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Employee")
-public class Employee {
+@Table(name = "City")
+public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer employeeId;
+    private Integer cityId;
 
-    @ManyToOne
-    @JoinColumn(name = "personaldataid", referencedColumnName = "personaldataid")
-    private PersonalData personalData;
+    private String city;
 }

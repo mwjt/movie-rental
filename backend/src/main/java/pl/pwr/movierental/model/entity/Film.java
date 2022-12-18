@@ -1,4 +1,4 @@
-package pl.pwr.movierental.model;
+package pl.pwr.movierental.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,11 +12,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "City")
-public class City {
+@Table(name = "Film")
+public class Film {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cityId;
+    private Integer filmId;
 
-    private String city;
+    private String name;
+
+    private String description;
+
+    private Double price;
+
+    private Double pricePerMonth;
+
+    private Integer amount;
 }
