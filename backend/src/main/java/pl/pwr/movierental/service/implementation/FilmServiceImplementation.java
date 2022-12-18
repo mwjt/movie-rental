@@ -51,7 +51,7 @@ public class FilmServiceImplementation implements FilmService {
         if (film.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("ID not found");
         }
-        newFilm.setFilmId(id);
+        newFilm.setId(id);
         filmRepository.saveAndFlush(filmMapper.filmDTOToFilm(newFilm));
         return ResponseEntity.status(HttpStatus.CREATED).body(newFilm);
     }

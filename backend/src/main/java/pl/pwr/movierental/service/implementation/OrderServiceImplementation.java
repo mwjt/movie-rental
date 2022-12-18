@@ -51,7 +51,7 @@ public class OrderServiceImplementation implements OrderService {
         if (order.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("ID not found");
         }
-        newOrder.setOrderId(id);
+        newOrder.setId(id);
         orderRepository.saveAndFlush(orderMapper.orderDTOToOrder(newOrder));
         return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
     }

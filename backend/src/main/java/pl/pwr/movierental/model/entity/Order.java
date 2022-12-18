@@ -13,27 +13,24 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Order")
+@Table(name = "order", schema = "public")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderId;
-
+    private Integer id;
+    @Column(name = "status", length = 50, nullable = false)
     private String status;
-
+    @Column(name = "rental_date", nullable = false)
     private Date rentalDate;
-
+    @Column(name = "return_date", nullable = false)
     private Date returnDate;
-
-    @ManyToOne
-    @JoinColumn(name = "clientid", referencedColumnName = "clientid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private ClientData clientData;
-
-    @ManyToOne
-    @JoinColumn(name = "filmid", referencedColumnName = "filmid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "film_id", referencedColumnName = "id")
     private Film film;
-
-    @ManyToOne
-    @JoinColumn(name = "employeeid", referencedColumnName = "employeeid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 }

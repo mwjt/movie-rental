@@ -12,12 +12,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "employee", schema = "public")
-public class Employee {
+@Table(name = "role", schema = "public")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
-    @JoinColumn(name = "personal_data_id", referencedColumnName = "id")
-    private PersonalData personalData;
+    @Column(name = "name", length = 50, nullable = false, unique = true)
+    @Enumerated(EnumType.STRING)
+    private ERole name;
 }

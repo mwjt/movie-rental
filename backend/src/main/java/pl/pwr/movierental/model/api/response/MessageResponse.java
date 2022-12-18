@@ -1,4 +1,4 @@
-package pl.pwr.movierental.model.dto;
+package pl.pwr.movierental.model.api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CityDTO {
-    private int id;
-    private String name;
+public class MessageResponse {
+    private String message;
 }

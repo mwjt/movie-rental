@@ -14,7 +14,7 @@ import pl.pwr.movierental.service.OrderService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/orders/")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -25,7 +25,7 @@ public class OrderController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = List.class))
             })
     })
-    @GetMapping("/orders")
+    @GetMapping("/all")
     public ResponseEntity<List<OrderDTO>> getAllOrders() {
         return orderService.getAll();
     }
@@ -37,7 +37,7 @@ public class OrderController {
             }),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @GetMapping("/order/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getOrderById(@PathVariable Integer id) {
         return orderService.getById(id);
     }
@@ -49,7 +49,7 @@ public class OrderController {
             }),
             @ApiResponse(responseCode = "400", description = "Order not given", content = @Content)
     })
-    @PostMapping("/orders")
+    @PostMapping("/")
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO order) {
         return orderService.add(order);
     }
@@ -62,7 +62,7 @@ public class OrderController {
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Order not given", content = @Content)
     })
-    @PutMapping("/order/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateOrder(@PathVariable Integer id, @RequestBody OrderDTO newOrder) {
         return orderService.change(id, newOrder);
     }
@@ -72,7 +72,7 @@ public class OrderController {
             @ApiResponse(responseCode = "201", description = "OK", content = @Content),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @DeleteMapping("/order/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable Integer id) {
         return orderService.delete(id);
     }

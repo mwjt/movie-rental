@@ -5,16 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonalDataDTO {
-    private int personalDataId;
+    private int id;
     private String name;
     private String surname;
-    private String email;
-    private int phoneNumber;
-    private String login;
-    private String password;
+    private BigInteger phoneNumber;
+    private UserDTO userDTO;
 }

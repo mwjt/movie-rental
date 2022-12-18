@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeDTO {
-    private int employeeId;
+    private int id;
     private PersonalDataDTO personalData;
 }

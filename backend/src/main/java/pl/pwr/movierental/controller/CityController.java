@@ -14,7 +14,7 @@ import pl.pwr.movierental.service.CityService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/cities/")
 public class CityController {
     @Autowired
     private CityService cityService;
@@ -25,7 +25,7 @@ public class CityController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = List.class))
             })
     })
-    @GetMapping("/cities")
+    @GetMapping("/all")
     public ResponseEntity<List<CityDTO>> getAllCities() {
         return cityService.getAll();
     }
@@ -38,7 +38,7 @@ public class CityController {
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
 
-    @GetMapping("/city/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getCityById(@PathVariable Integer id) {
         return cityService.getById(id);
     }
@@ -50,7 +50,7 @@ public class CityController {
             }),
             @ApiResponse(responseCode = "400", description = "City not given", content = @Content)
     })
-    @PostMapping("/cities")
+    @PostMapping("/")
     public ResponseEntity<?> createCity(@RequestBody CityDTO city) {
         return cityService.add(city);
     }
@@ -63,7 +63,7 @@ public class CityController {
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "City not given", content = @Content)
     })
-    @PutMapping("/city/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateCity(@PathVariable Integer id, @RequestBody CityDTO newCity) {
         return cityService.change(id, newCity);
     }
@@ -73,7 +73,7 @@ public class CityController {
             @ApiResponse(responseCode = "201", description = "OK", content = @Content),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @DeleteMapping("/city/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCity(@PathVariable Integer id) {
         return cityService.delete(id);
     }

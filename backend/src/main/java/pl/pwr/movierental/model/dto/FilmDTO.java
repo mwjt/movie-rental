@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class FilmDTO {
-    private int filmId;
+    private int id;
     private String name;
     private String description;
-    private double price;
-    private double pricePerMonth;
+    private BigDecimal price;
+    private BigDecimal pricePerMonth;
     private int amount;
 }

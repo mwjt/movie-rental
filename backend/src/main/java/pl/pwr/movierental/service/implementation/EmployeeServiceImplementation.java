@@ -51,7 +51,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
         if (employee.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("ID not found");
         }
-        newEmployee.setEmployeeId(id);
+        newEmployee.setId(id);
         employeeRepository.saveAndFlush(employeeMapper.employeeDTOToEmploye(newEmployee));
         return ResponseEntity.status(HttpStatus.CREATED).body(newEmployee);
     }

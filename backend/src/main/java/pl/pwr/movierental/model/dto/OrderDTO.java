@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
-    private int orderId;
+    private int id;
     private String status;
     private Date rentalDate;
     private Date returnDate;

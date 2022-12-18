@@ -14,7 +14,7 @@ import pl.pwr.movierental.service.AddressService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/addresses/")
 public class AddressController {
     @Autowired
     private AddressService addressService;
@@ -25,7 +25,7 @@ public class AddressController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = List.class))
             })
     })
-    @GetMapping("/addresses")
+    @GetMapping("/all")
     public ResponseEntity<List<AddressDTO>> getAllAddresses() {
         return addressService.getAll();
     }
@@ -37,7 +37,7 @@ public class AddressController {
             }),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @GetMapping("/address/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getAddressById(@PathVariable Integer id) {
         return addressService.getById(id);
     }
@@ -49,7 +49,7 @@ public class AddressController {
             }),
             @ApiResponse(responseCode = "400", description = "Address not given", content = @Content)
     })
-    @PostMapping("/addresses")
+    @PostMapping("/")
     public ResponseEntity<?> createAddress(@RequestBody AddressDTO address) {
         return addressService.add(address);
     }
@@ -62,7 +62,7 @@ public class AddressController {
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Address not given", content = @Content)
     })
-    @PutMapping("/address/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateAddress(@PathVariable Integer id, @RequestBody AddressDTO newAddress) {
         return addressService.change(id, newAddress);
     }
@@ -72,7 +72,7 @@ public class AddressController {
             @ApiResponse(responseCode = "201", description = "OK", content = @Content),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @DeleteMapping("/address/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAddress(@PathVariable Integer id) {
         return addressService.delete(id);
     }
