@@ -1,9 +1,10 @@
-package pl.pwr.movierental.model;
+package pl.pwr.movierental.model.api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Setter
 public class JwtResponse implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -1L;
 
     private final String token;

@@ -1,4 +1,4 @@
-package pl.pwr.movierental.model;
+package pl.pwr.movierental.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,17 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ClientData")
-public class ClientData {
+@Table(name = "Employee")
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer clientId;
-
-    private Double accountBalance;
-
-    @ManyToOne
-    @JoinColumn(name = "addressid", referencedColumnName = "addressid")
-    private Address address;
+    private Integer employeeId;
 
     @ManyToOne
     @JoinColumn(name = "personaldataid", referencedColumnName = "personaldataid")

@@ -1,4 +1,4 @@
-package pl.pwr.movierental.model;
+package pl.pwr.movierental.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
