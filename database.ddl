@@ -4,7 +4,7 @@ CREATE TABLE "Order" (
 	OrderID SERIAL NOT NULL, 
 	Status varchar(50) NOT NULL, 
 	RentalDate date NOT NULL, 
-	ReturnDate date NOT NULL, 
+	ReturnDate date, 
 	ClientID int4 NOT NULL, 
 	FilmID int4, 
 	EmployeeID int4, 
