@@ -52,7 +52,7 @@ public class PersonalDataServiceImplementation implements PersonalDataService {
         if (personalData.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("ID not found");
         }
-        newPersonalData.setPersonalDataId(id);
+        newPersonalData.setId(id);
         personalDataRepository.saveAndFlush(personalDataMapper.personalDTOToPersonal(newPersonalData));
         return ResponseEntity.status(HttpStatus.CREATED).body(newPersonalData);
     }

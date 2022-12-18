@@ -51,7 +51,7 @@ public class ClientDataServiceImplementation implements ClientDataService {
         if (clientData.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("ID not found");
         }
-        newClientData.setClientId(id);
+        newClientData.setId(id);
         clientDataRepository.saveAndFlush(clientDataMapper.clientDTOToClient(newClientData));
         return ResponseEntity.status(HttpStatus.CREATED).body(newClientData);
     }

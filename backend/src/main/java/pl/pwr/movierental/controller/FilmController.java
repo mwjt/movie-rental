@@ -14,7 +14,7 @@ import pl.pwr.movierental.service.FilmService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/films/")
 public class FilmController {
     @Autowired
     private FilmService filmService;
@@ -25,7 +25,7 @@ public class FilmController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = List.class))
             })
     })
-    @GetMapping("/films")
+    @GetMapping("/all")
     public ResponseEntity<List<FilmDTO>> getAllFilms() {
         return filmService.getAll();
     }
@@ -37,7 +37,7 @@ public class FilmController {
             }),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @GetMapping("/film/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getFilmById(@PathVariable Integer id) {
         return filmService.getById(id);
     }
@@ -49,7 +49,7 @@ public class FilmController {
             }),
             @ApiResponse(responseCode = "400", description = "Film not given", content = @Content)
     })
-    @PostMapping("/films")
+    @PostMapping("/")
     public ResponseEntity<?> createFilm(@RequestBody FilmDTO film) {
         return filmService.add(film);
     }
@@ -62,7 +62,7 @@ public class FilmController {
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Film not given", content = @Content)
     })
-    @PutMapping("/film/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateFilm(@PathVariable Integer id, @RequestBody FilmDTO newFilm) {
         return filmService.change(id, newFilm);
     }
@@ -72,7 +72,7 @@ public class FilmController {
             @ApiResponse(responseCode = "201", description = "OK", content = @Content),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @DeleteMapping("/film/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteFilm(@PathVariable Integer id) {
         return filmService.delete(id);
     }

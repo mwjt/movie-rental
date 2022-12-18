@@ -12,11 +12,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Role")
+@Table(name = "role", schema = "public")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
-
+    private Integer id;
+    @Column(name = "name", length = 50, nullable = false, unique = true)
+    @Enumerated(EnumType.STRING)
     private ERole name;
 }

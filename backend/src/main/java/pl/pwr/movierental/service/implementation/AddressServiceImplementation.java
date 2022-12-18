@@ -51,7 +51,7 @@ public class AddressServiceImplementation implements AddressService {
         if (address.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("ID not found");
         }
-        newAddress.setAddressId(id);
+        newAddress.setId(id);
         addressRepository.saveAndFlush(addressMapper.addressDTOToAddress(newAddress));
         return ResponseEntity.status(HttpStatus.CREATED).body(newAddress);
     }

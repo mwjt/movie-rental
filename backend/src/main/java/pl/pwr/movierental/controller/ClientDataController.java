@@ -14,7 +14,7 @@ import pl.pwr.movierental.service.ClientDataService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/clients/")
 public class ClientDataController {
     @Autowired
     private ClientDataService clientDataService;
@@ -25,7 +25,7 @@ public class ClientDataController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = List.class))
             })
     })
-    @GetMapping("/clients")
+    @GetMapping("/all")
     public ResponseEntity<List<ClientDataDTO>> getAllClientsData() {
         return clientDataService.getAll();
     }
@@ -37,7 +37,7 @@ public class ClientDataController {
             }),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @GetMapping("/client/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getClientDataById(@PathVariable Integer id) {
         return clientDataService.getById(id);
     }
@@ -49,7 +49,7 @@ public class ClientDataController {
             }),
             @ApiResponse(responseCode = "400", description = "ClientData not given", content = @Content)
     })
-    @PostMapping("/clients")
+    @PostMapping("/")
     public ResponseEntity<?> createClientData(@RequestBody ClientDataDTO clientData) {
         return clientDataService.add(clientData);
     }
@@ -62,7 +62,7 @@ public class ClientDataController {
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "ClientData not given", content = @Content)
     })
-    @PutMapping("/client/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateClientData(@PathVariable Integer id, @RequestBody ClientDataDTO newClientData) {
         return clientDataService.change(id, newClientData);
     }
@@ -72,7 +72,7 @@ public class ClientDataController {
             @ApiResponse(responseCode = "201", description = "OK", content = @Content),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @DeleteMapping("/client/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCity(@PathVariable Integer id) {
         return clientDataService.delete(id);
     }

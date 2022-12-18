@@ -14,7 +14,7 @@ import pl.pwr.movierental.service.EmployeeService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/employees/")
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -25,7 +25,7 @@ public class EmployeeController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = List.class))
             })
     })
-    @GetMapping("/employees")
+    @GetMapping("/all")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         return employeeService.getAll();
     }
@@ -37,7 +37,7 @@ public class EmployeeController {
             }),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @GetMapping("/employee/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getEmployeeById(@PathVariable Integer id) {
         return employeeService.getById(id);
     }
@@ -49,7 +49,7 @@ public class EmployeeController {
             }),
             @ApiResponse(responseCode = "400", description = "Employee not given", content = @Content)
     })
-    @PostMapping("/employees")
+    @PostMapping("/")
     public ResponseEntity<?> createEmployee(@RequestBody EmployeeDTO employee) {
         return employeeService.add(employee);
     }
@@ -62,7 +62,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Employee not given", content = @Content)
     })
-    @PutMapping("/employee/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable Integer id, @RequestBody EmployeeDTO newEmployee) {
         return employeeService.change(id, newEmployee);
     }
@@ -72,7 +72,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "201", description = "OK", content = @Content),
             @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
     })
-    @DeleteMapping("/employee/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Integer id) {
         return employeeService.delete(id);
     }

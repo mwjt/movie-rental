@@ -1,58 +1,85 @@
-DROP TABLE IF EXISTS "Order", "Address", "City", "Employee", "ClientData", "PersonalData", "Films";
+DROP TABLE IF EXISTS "order", "address", "city", "employee", "client_data", "personal_data", "film", "user", "role", "user_role";
+DROP TYPE IF EXISTS "erole";
 
-CREATE TABLE "Order" (
-	OrderID SERIAL NOT NULL, 
-	Status varchar(50) NOT NULL, 
-	RentalDate date NOT NULL, 
-	ReturnDate date NOT NULL, 
-	ClientID int4 NOT NULL, 
-	FilmID int4, 
-	EmployeeID int4, 
-	PRIMARY KEY (OrderID));
-CREATE TABLE "Address" (
-	AddressID SERIAL NOT NULL, 
-	Street varchar(100) NOT NULL, 
-	BuildingNumber varchar(5) NOT NULL, 
-	FlatNumber varchar(5), 
-	PostalCode varchar(10) NOT NULL,  
-	CityID int4 NOT NULL, 
-	PRIMARY KEY (AddressID));
-CREATE TABLE "City" (
-	CityID SERIAL NOT NULL, 
-	City varchar(100) NOT NULL UNIQUE, 
-	PRIMARY KEY (CityID));
-CREATE TABLE "Employee" (
-	EmployeeID SERIAL NOT NULL, 
-	PersonalDataID int4, 
-	PRIMARY KEY (EmployeeID));
-CREATE TABLE "ClientData" (
-	ClientID SERIAL NOT NULL, 
-	AccountBalance numeric(19, 2) NOT NULL, 
-	AddressID int4 NOT NULL, 
-	PersonalDataID int4, 
-	PRIMARY KEY (ClientID));
-CREATE TABLE "PersonalData" (
-	PersonalDataID SERIAL NOT NULL, 
-	Name varchar(50) NOT NULL, 
-	Surname varchar(50) NOT NULL, 
-	Email varchar(100) NOT NULL UNIQUE, 
-	PhoneNumber numeric(9, 0) NOT NULL, 
-	Login varchar(100) NOT NULL UNIQUE, 
-	Password varchar(255) NOT NULL, 
-	PRIMARY KEY (PersonalDataID));
-CREATE TABLE "Films" (
-	FilmID SERIAL NOT NULL, 
-	Name varchar(100) NOT NULL, 
-	Description varchar(255), 
-	Price numeric(5, 2) NOT NULL, 
-	PricePerMonth numeric(5, 2) NOT NULL, 
-	Amount int4 NOT NULL, 
-	PRIMARY KEY (FilmID));
+CREATE TABLE "order" (
+	id SERIAL NOT NULL, 
+	status varchar(50) NOT NULL, 
+	rental_date date NOT NULL, 
+	return_date date NOT NULL, 
+	client_id int4 NOT NULL, 
+	film_id int4 NOT NULL, 
+	employee_id int4 NOT NULL, 
+	PRIMARY KEY (id));
+	
+CREATE TABLE address (
+	id SERIAL NOT NULL, 
+	street varchar(100) NOT NULL, 
+	building_number varchar(5) NOT NULL, 
+	flat_number varchar(5), 
+	postal_code varchar(10) NOT NULL, 
+	city_id int4 NOT NULL, 
+	PRIMARY KEY (id));
+	
+CREATE TABLE city (
+	id SERIAL NOT NULL, 
+	name varchar(100) NOT NULL UNIQUE, 
+	PRIMARY KEY (id));
 
-ALTER TABLE "Address" ADD CONSTRAINT FKAddress873157 FOREIGN KEY (CityID) REFERENCES "City" (CityID);
-ALTER TABLE "ClientData" ADD CONSTRAINT FKClientData358449 FOREIGN KEY (AddressID) REFERENCES "Address" (AddressID);
-ALTER TABLE "ClientData" ADD CONSTRAINT FKClientData810950 FOREIGN KEY (PersonalDataID) REFERENCES "PersonalData" (PersonalDataID);
-ALTER TABLE "Order" ADD CONSTRAINT FKOrder656903 FOREIGN KEY (ClientID) REFERENCES "ClientData" (ClientID);
-ALTER TABLE "Employee" ADD CONSTRAINT FKEmployee854123 FOREIGN KEY (PersonalDataID) REFERENCES "PersonalData" (PersonalDataID);
-ALTER TABLE "Order" ADD CONSTRAINT FKOrder301979 FOREIGN KEY (FilmID) REFERENCES "Films" (FilmID);
-ALTER TABLE "Order" ADD CONSTRAINT FKOrder932455 FOREIGN KEY (EmployeeID) REFERENCES "Employee" (EmployeeID);
+CREATE TABLE employee (
+	id SERIAL NOT NULL, 
+	personal_data_id int4 NOT NULL, 
+	PRIMARY KEY (id));
+
+CREATE TABLE client_data (
+	id SERIAL NOT NULL, 
+	account_balance numeric(19, 2) NOT NULL, 
+	address_id int4 NOT NULL, 
+	personal_data_id int4 NOT NULL, 
+	PRIMARY KEY (id));
+
+CREATE TABLE personal_data (
+	id SERIAL NOT NULL, 
+	name varchar(50) NOT NULL, 
+	surname varchar(50) NOT NULL, 
+	phone_number numeric(9, 0) NOT NULL, 
+	user_id int4 NOT NULL, 
+	PRIMARY KEY (id));
+
+CREATE TABLE film (
+	id SERIAL NOT NULL, 
+	name varchar(100) NOT NULL, 
+	description varchar(255), 
+	price numeric(5, 2) NOT NULL, 
+	price_per_month numeric(5, 2) NOT NULL, 
+	amount int4 NOT NULL, 
+	PRIMARY KEY (id));
+
+CREATE TABLE "user" (
+	id SERIAL NOT NULL, 
+	username varchar(255) NOT NULL UNIQUE, 
+	password varchar(255) NOT NULL, 
+	email varchar(255) NOT NULL UNIQUE, 
+	PRIMARY KEY (id));
+
+CREATE TYPE erole AS ENUM ('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_USER');
+CREATE TABLE role (
+	id SERIAL NOT NULL, 
+	name erole NOT NULL UNIQUE, 
+	PRIMARY KEY (id));
+
+CREATE TABLE user_role (
+	user_id int4 NOT NULL, 
+	role_id int4 NOT NULL);
+
+ALTER TABLE address ADD CONSTRAINT FKaddress195262 FOREIGN KEY (city_id) REFERENCES city (id);
+ALTER TABLE client_data ADD CONSTRAINT FKclient_dat195398 FOREIGN KEY (address_id) REFERENCES address (id);
+ALTER TABLE client_data ADD CONSTRAINT FKclient_dat534997 FOREIGN KEY (personal_data_id) REFERENCES personal_data (id);
+ALTER TABLE "order" ADD CONSTRAINT FKorder253086 FOREIGN KEY (client_id) REFERENCES client_data (id);
+ALTER TABLE employee ADD CONSTRAINT FKemployee794377 FOREIGN KEY (personal_data_id) REFERENCES personal_data (id);
+ALTER TABLE "order" ADD CONSTRAINT FKorder610054 FOREIGN KEY (film_id) REFERENCES film (id);
+ALTER TABLE "order" ADD CONSTRAINT FKorder401022 FOREIGN KEY (employee_id) REFERENCES employee (id);
+ALTER TABLE personal_data ADD CONSTRAINT FKpersonal_d211891 FOREIGN KEY (user_id) REFERENCES "user" (id);
+ALTER TABLE user_role ADD CONSTRAINT FKuser_role943458 FOREIGN KEY (user_id) REFERENCES "user" (id);
+ALTER TABLE user_role ADD CONSTRAINT FKuser_role868982 FOREIGN KEY (role_id) REFERENCES role (id);
+
+INSERT INTO "role"("name") VALUES ('ROLE_USER'), ('ROLE_EMPLOYEE'), ('ROLE_ADMIN');

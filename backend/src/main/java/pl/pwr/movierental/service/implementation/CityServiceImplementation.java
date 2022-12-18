@@ -51,7 +51,7 @@ public class CityServiceImplementation implements CityService {
         if (city.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("ID not found");
         }
-        newCity.setCityId(id);
+        newCity.setId(id);
         cityRepository.saveAndFlush(cityMapper.cityDTOToCity(newCity));
         return ResponseEntity.status(HttpStatus.CREATED).body(newCity);
     }

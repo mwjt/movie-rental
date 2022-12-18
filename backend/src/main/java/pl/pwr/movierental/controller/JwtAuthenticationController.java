@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/auth/")
 public class JwtAuthenticationController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -50,12 +50,7 @@ public class JwtAuthenticationController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @Operation(summary = "Create token")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Token", content = @Content),
-            @ApiResponse(responseCode = "204", description = "ID not found", content = @Content)
-    })
-    @PostMapping(value = "/authenticate")
+    @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -111,9 +106,9 @@ public class JwtAuthenticationController {
                         roles.add(adminRole);
                     }
                     case "employee" -> {
-                        Role modRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+                        Role empRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
+                        roles.add(empRole);
                     }
                     default -> {
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)

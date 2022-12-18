@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CityDTO {
-    private int cityId;
-    private String city;
+    private int id;
+    private String name;
 }

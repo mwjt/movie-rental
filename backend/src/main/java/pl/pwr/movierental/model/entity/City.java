@@ -12,11 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "City")
+@Table(name = "city", schema = "public")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cityId;
-
-    private String city;
+    private Integer id;
+    @Column(name = "name", length = 100, nullable = false, unique = true)
+    private String name;
 }
