@@ -24,7 +24,7 @@ public class Order {
     private String status;
     @Column(name = "rental_date", nullable = false)
     private Date rentalDate;
-    @Column(name = "return_date", nullable = false)
+    @Column(name = "return_date")
     private Date returnDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id")

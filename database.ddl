@@ -10,8 +10,8 @@ CREATE TABLE "order" (
 	rental_date date NOT NULL, 
 	return_date date, 
 	client_id int4 NOT NULL, 
-	film_id int4 NOT NULL, 
-	employee_id int4 NOT NULL, 
+	film_id int4, 
+	employee_id int4, 
 	PRIMARY KEY (id));
 	
 CREATE SEQUENCE address_seq;

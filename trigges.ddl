@@ -1,131 +1,154 @@
---RentFilmTrigger
-CREATE OR REPLACE FUNCTION RentFilmTrigger_function()
+--Rent_Film
+CREATE OR REPLACE FUNCTION Rent_Film_function()
 RETURNS TRIGGER AS $$
 BEGIN
-	UPDATE "Order" SET returndate = rentaldate + INTERVAL '1 month';
-    UPDATE "Films" SET amount = amount - 1 WHERE filmid = NEW.filmid;
-	
-	UPDATE "ClientData"
-    SET accountbalance = accountbalance - (SELECT pricepermonth FROM "Films" WHERE filmid = NEW.filmid)
-    WHERE clientid = NEW.clientid;
+  UPDATE "order" 
+    SET return_date = rental_date + INTERVAL '1 month';
+  UPDATE "film" 
+    SET amount = amount - 1 
+    WHERE id = NEW.film_id;
+  UPDATE "client_data"
+    SET account_balance = account_balance - (SELECT price_per_month FROM "film" WHERE id = NEW.film_id)
+    WHERE id = NEW.client_id;
     RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
-	
-CREATE TRIGGER RentFilmTrigger
-AFTER INSERT ON "Order"
+
+DROP TRIGGER IF EXISTS Rent_Film ON "order";
+CREATE TRIGGER Rent_Film
+AFTER INSERT 
+ON "order"
 FOR EACH ROW
-EXECUTE PROCEDURE RentFilmTrigger_function();
+EXECUTE PROCEDURE Rent_Film_function();
 
-
---ExtendRentTrigger
-CREATE OR REPLACE FUNCTION ExtendRentTrigger_function()
+--Extend_Rent
+CREATE OR REPLACE FUNCTION Extend_Rent_function()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE "Order"
-  SET returndate = OLD.returndate + INTERVAL '1 month'
-  WHERE orderid = NEW.orderid;
-
-  UPDATE "ClientData"
-  SET accountbalance = accountbalance - (SELECT pricepermonth FROM "Films" WHERE filmid = NEW.filmid)
-  WHERE clientid = NEW.clientid;
+  UPDATE "order"
+    SET return_date = OLD.return_date + INTERVAL '1 month'
+    WHERE id = NEW.id;
+  UPDATE "client_data"
+    SET account_balance = account_balance - (SELECT price_per_month FROM "film" WHERE id = NEW.id)
+    WHERE id = NEW.client_id;
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER ExtendRentTrigger
-AFTER UPDATE OF returndate
-ON "Order"
+DROP TRIGGER IF EXISTS Extend_Rent ON "order";
+CREATE TRIGGER Extend_Rent
+AFTER UPDATE OF return_date
+ON "order"
 FOR EACH ROW
 WHEN (pg_trigger_depth() = 0)
-EXECUTE PROCEDURE ExtendRentTrigger_function();
+EXECUTE PROCEDURE Extend_Rent_function();
 
-
---ChargeFineTrigger
-CREATE OR REPLACE FUNCTION ChargeFineTrigger_function()
+--Charge_Fine
+CREATE OR REPLACE FUNCTION Charge_Fine_function()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE "ClientData"
-  SET accountbalace = accountbalace - (SELECT price FROM "films" WHERE filmid = NEW.filmid)
-  WHERE clientid = NEW.clientid;
+  UPDATE "client_data"
+    SET account_balance = account_balance - (SELECT price FROM "film" WHERE id = NEW.film_id)
+    WHERE id = NEW.client_id;
 
-  DELETE FROM "Order" WHERE orderid = NEW.orderid;
+  DELETE FROM "order" WHERE id = NEW.id;
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER ChargeFineTrigger
+DROP TRIGGER IF EXISTS Charge_Fine ON "order";
+CREATE TRIGGER Charge_Fine
 AFTER UPDATE OF status
-ON "Order"
+ON "order"
 FOR EACH ROW
-WHEN (OLD.status <> 'Damaged' AND NEW.status = 'Damaged')
-EXECUTE PROCEDURE ChargeFineTrigger_function();
+WHEN (OLD.status <> 'damaged' AND NEW.status = 'damaged')
+EXECUTE PROCEDURE Charge_Fine_function();
 
---CREATE TRIGGER EndOrderTrigger
-CREATE OR REPLACE FUNCTION EndOrderTrigger_function()
+--End_Order
+CREATE OR REPLACE FUNCTION End_Order_function()
 RETURNS TRIGGER AS $$
 BEGIN
-  DELETE FROM orders WHERE id = NEW.id;
-
-  UPDATE "Films"
-  SET amount = amount + 1
-  WHERE filmid = NEW.filmid; --lub WHERE filmid = NEW.filmid;
+  DELETE FROM "order" WHERE id = NEW.id;
+  UPDATE "film"
+    SET amount = amount + 1
+    WHERE id = NEW.film_id;
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER EndOrderTrigger
+DROP TRIGGER IF EXISTS End_Order ON "order";
+CREATE TRIGGER End_Order
 AFTER UPDATE OF status
-ON "Order"
+ON "order"
 FOR EACH ROW
-WHEN (OLD.status <> 'Ended' AND NEW.status = 'Ended')
-EXECUTE PROCEDURE EndOrderTrigger_function();
+WHEN (OLD.status <> 'ended' AND NEW.status = 'ended')
+EXECUTE PROCEDURE End_Order_function();
 
---CREATE TRIGGER Remove_Film
+--Remove_Film
 CREATE OR REPLACE FUNCTION Remove_Film_function()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE "Order"
-  SET filmid = NULL
-  WHERE filmid = OLD.filmid;
+  UPDATE "order"
+    SET film_id = NULL
+    WHERE film_id = OLD.id;
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS Remove_Film ON "film";
 CREATE TRIGGER Remove_Film
-BEFORE DELETE ON "Films"
+BEFORE DELETE 
+ON "film"
 FOR EACH ROW
 EXECUTE PROCEDURE Remove_Film_function();
 
---CREATE TRIGGER Remove_ClientData
-CREATE OR REPLACE FUNCTION Remove_ClientData_function()
+--Remove_Client_Data_Before
+CREATE OR REPLACE FUNCTION Remove_Client_Data_Before_function()
 RETURNS TRIGGER AS $$
 BEGIN
-  DELETE FROM "Address" WHERE addressid = OLD.addressid;
-  DELETE FROM "PersonalData" WHERE personaldataid = OLD.personaldataid;
-  DELETE FROM "Order" WHERE orderid = OLD.orderid;
+  DELETE FROM "order" WHERE client_id = OLD.id;
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER Remove_ClientData
-BEFORE DELETE ON "ClientData"
+DROP TRIGGER IF EXISTS Remove_Client_Data_Before ON "client_data";
+CREATE TRIGGER Remove_Client_Data_Before
+BEFORE DELETE 
+ON "client_data"
 FOR EACH ROW
-EXECUTE PROCEDURE Remove_ClientData_function();
+EXECUTE PROCEDURE Remove_Client_Data_Before_function();
 
---CREATE TRIGGER Remove_Employee
+--Remove_Client_Data_After
+CREATE OR REPLACE FUNCTION Remove_Client_Data_After_function()
+RETURNS TRIGGER AS $$
+BEGIN
+  DELETE FROM "address" WHERE id = OLD.address_id;
+  DELETE FROM "personal_data" WHERE id = OLD.personal_data_id;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS Remove_Client_Data_After ON "client_data";
+CREATE TRIGGER Remove_Client_Data_After
+AFTER DELETE 
+ON "client_data"
+FOR EACH ROW
+EXECUTE PROCEDURE Remove_Client_Data_After_function();
+
+--Remove_Employee
 CREATE OR REPLACE FUNCTION Remove_Employee_function()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE "Order"
-  SET employeeid = NULL
-  WHERE employeeid = OLD.employeeid;
+  UPDATE "order"
+    SET employee_id = NULL
+    WHERE employee_id = OLD.id;
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS Remove_Employee ON "employee";
 CREATE TRIGGER Remove_Employee
-BEFORE DELETE ON "Employee"
+BEFORE DELETE 
+ON "employee"
 FOR EACH ROW
 EXECUTE PROCEDURE Remove_Employee_function();
-
