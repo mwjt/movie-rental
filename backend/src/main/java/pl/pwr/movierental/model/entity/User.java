@@ -17,7 +17,9 @@ import java.util.Set;
 @Table(name = "user", schema = "public")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     @Column(name = "username", nullable = false, unique = true)
     private String username;

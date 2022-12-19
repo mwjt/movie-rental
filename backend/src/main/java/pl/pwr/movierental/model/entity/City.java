@@ -15,7 +15,9 @@ import javax.persistence.*;
 @Table(name = "city", schema = "public")
 public class City {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "city_generator")
+    @SequenceGenerator(name = "city_generator", sequenceName = "city_seq", allocationSize = 1)
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;

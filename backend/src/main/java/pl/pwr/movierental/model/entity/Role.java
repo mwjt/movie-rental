@@ -15,7 +15,9 @@ import javax.persistence.*;
 @Table(name = "role", schema = "public")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_generator")
+    @SequenceGenerator(name = "role_generator", sequenceName = "role_seq", allocationSize = 1)
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     @Column(name = "name", length = 50, nullable = false, unique = true)
     @Enumerated(EnumType.STRING)

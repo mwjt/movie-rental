@@ -16,7 +16,9 @@ import java.math.BigInteger;
 @Table(name = "personal_data", schema = "public")
 public class PersonalData {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personal_data_generator")
+    @SequenceGenerator(name = "personal_data_generator", sequenceName = "personal_data_seq", allocationSize = 1)
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     @Column(name = "name", length = 50, nullable = false)
     private String name;
