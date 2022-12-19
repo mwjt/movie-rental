@@ -2,6 +2,7 @@ package pl.pwr.movierental.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,12 @@ public class JwtAuthenticationController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Operation(summary = "Sign in, get JWT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "JWT", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = JwtResponse.class))
+            })
+    })
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -71,6 +78,12 @@ public class JwtAuthenticationController {
                 roles));
     }
 
+    @Operation(summary = "Sign up")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Message OK", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class))
+            })
+    })
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
