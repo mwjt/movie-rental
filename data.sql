@@ -28,3 +28,8 @@ INSERT INTO film (name, description, price, price_per_month, amount) VALUES
 	('Skarb Narodow', NULL, 45, 5, 4), 
 	('Batman', NULL, 20, 5, 4),
 	('Przygody Guliwiera', NULL, 70, 5, 4);
+INSERT INTO "order" (status, rental_date, client_id, film_id) VALUES
+	('in_way','2023-01-14',1,2),
+	('in_way','2023-01-14',1,3),
+	('in_way','2023-01-14',2,3),
+	('in_way','2023-01-14',2,1);
