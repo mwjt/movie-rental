@@ -10,7 +10,7 @@ BEGIN
   UPDATE "client_data"
     SET account_balance = account_balance - (SELECT price_per_month FROM "film" WHERE id = NEW.film_id)
     WHERE id = NEW.client_id;
-    RETURN NULL;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -31,7 +31,7 @@ BEGIN
   UPDATE "client_data"
     SET account_balance = account_balance - (SELECT price_per_month FROM "film" WHERE id = NEW.id)
     WHERE id = NEW.client_id;
-  RETURN NULL;
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -52,7 +52,7 @@ BEGIN
     WHERE id = NEW.client_id;
 
   DELETE FROM "order" WHERE id = NEW.id;
-  RETURN NULL;
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -72,7 +72,7 @@ BEGIN
   UPDATE "film"
     SET amount = amount + 1
     WHERE id = NEW.film_id;
-  RETURN NULL;
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -88,10 +88,8 @@ EXECUTE PROCEDURE End_Order_function();
 CREATE OR REPLACE FUNCTION Remove_Film_function()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE "order"
-    SET film_id = NULL
-    WHERE film_id = OLD.id;
-  RETURN NULL;
+	DELETE FROM "order" WHERE film_id = OLD.id;
+  RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -107,7 +105,7 @@ CREATE OR REPLACE FUNCTION Remove_Client_Data_Before_function()
 RETURNS TRIGGER AS $$
 BEGIN
   DELETE FROM "order" WHERE client_id = OLD.id;
-  RETURN NULL;
+  RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -124,7 +122,7 @@ RETURNS TRIGGER AS $$
 BEGIN
   DELETE FROM "address" WHERE id = OLD.address_id;
   DELETE FROM "personal_data" WHERE id = OLD.personal_data_id;
-  RETURN NULL;
+  RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -142,7 +140,7 @@ BEGIN
   UPDATE "order"
     SET employee_id = NULL
     WHERE employee_id = OLD.id;
-  RETURN NULL;
+  RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
